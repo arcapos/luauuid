@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2017 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
+ * Copyright (c) 2016 - 2018 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,6 @@
 
 #define UUID_STR_SIZE	36
 
-#define UUID_METATABLE	"Lua uuid methods"
+#define UUID_METATABLE	"uuid"
 
 #endif /* __LUAUUID_H__ */
