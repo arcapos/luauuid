@@ -1,4 +1,4 @@
-= Handling Universally Unique Identifiers (UUIDs) in Lua = 
+Handling Universally Unique Identifiers (UUIDs) in Lua
 
 The uuid module is used to generate and parse uuids. It uses the libuuid by
 Theodore Y. Ts'o. libuuid is part of the util-linux package since version
