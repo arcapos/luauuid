@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2017 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
+ * Copyright (c) 2016 - 2020 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -16,7 +16,7 @@
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * ARE DISCLAIMED. IN NO EVENT SHALL MICRO SYSTEMS MARC BALMER BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -44,7 +44,7 @@ lua_uuid_generator(lua_State *L, void (*generator)(uuid_t))
 
 	generator(uuid);
 	format = lua_tostring(L, 1);
-	
+
 	if (format && *format == 't') {
 		uuid_unparse(uuid, str);
 		lua_pushlstring(L, str, UUID_STR_SIZE);
@@ -81,10 +81,10 @@ lua_uuid_generate_time_safe(lua_State *L)
 	const char *format;
 	char str[UUID_STR_SIZE + 1];
 	int r;
-	
+
 	format = lua_tostring(L, 1);
 	lua_pushboolean(L, uuid_generate_time_safe(uuid) == 0 ? 1 : 0);
-	
+
 	if (format && *format == 't') {
 		uuid_unparse(uuid, str);
 		lua_pushlstring(L, str, UUID_STR_SIZE);
@@ -100,7 +100,7 @@ static int
 lua_uuid_parse(lua_State *L)
 {
 	uuid_t uuid, *u;
-	
+
 	if (!uuid_parse(luaL_checkstring(L, 1), uuid)) {
 		u = (uuid_t *)lua_newuserdata(L, sizeof(uuid_t));
 		uuid_copy(*u, uuid);
@@ -115,7 +115,7 @@ static int
 lua_uuid_clear(lua_State *L)
 {
 	uuid_t *u;
-	
+
 	u = luaL_checkudata(L, 1, UUID_METATABLE);
 	uuid_clear(*u);
 	return 0;
@@ -128,7 +128,7 @@ lua_uuid_concat(lua_State *L)
 	uuid_t *u;
 	size_t l;
 	const char *s;
-	
+
 	luaL_buffinit(L, &b);
 	s = luaL_tolstring(L, 1, &l);
 	luaL_addlstring(&b, s, l);
@@ -136,7 +136,7 @@ lua_uuid_concat(lua_State *L)
 	luaL_addlstring(&b, s, l);
 
 	luaL_pushresult(&b);
-	
+
 	return 1;
 }
 
@@ -155,7 +155,7 @@ static int
 lua_uuid_is_null(lua_State *L)
 {
 	uuid_t *u;
-	
+
 	u = luaL_checkudata(L, 1, UUID_METATABLE);
 	lua_pushboolean(L, uuid_is_null(*u));
 	return 1;
@@ -166,7 +166,7 @@ lua_uuid_time(lua_State *L)
 {
 	struct timeval tv;
 	uuid_t *u;
-	
+
 	u = luaL_checkudata(L, 1, UUID_METATABLE);
 	uuid_time(*u, &tv);
 	lua_pushinteger(L, tv.tv_sec);
@@ -179,7 +179,7 @@ lua_uuid_unparse(lua_State *L)
 {
 	char str[UUID_STR_SIZE + 1];
 	uuid_t *u;
-	
+
 	u = luaL_checkudata(L, 1, UUID_METATABLE);
 	uuid_unparse(*u, str);
 	lua_pushstring(L, str);
@@ -190,7 +190,7 @@ static int
 lua_uuid_equal(lua_State *L)
 {
 	uuid_t *u1, *u2;
-	
+
 	u1 = luaL_checkudata(L, 1, UUID_METATABLE);
 	u2 = luaL_checkudata(L, 2, UUID_METATABLE);
 	lua_pushboolean(L, uuid_compare(*u1, *u2) == 0 ? 1 : 0);
@@ -201,7 +201,7 @@ static int
 lua_uuid_less(lua_State *L)
 {
 	uuid_t *u1, *u2;
-	
+
 	u1 = luaL_checkudata(L, 1, UUID_METATABLE);
 	u2 = luaL_checkudata(L, 2, UUID_METATABLE);
 	lua_pushboolean(L, uuid_compare(*u1, *u2) < 0 ? 1 : 0);
@@ -212,7 +212,7 @@ static int
 lua_uuid_less_or_equal(lua_State *L)
 {
 	uuid_t *u1, *u2;
-	
+
 	u1 = luaL_checkudata(L, 1, UUID_METATABLE);
 	u2 = luaL_checkudata(L, 2, UUID_METATABLE);
 	lua_pushboolean(L, uuid_compare(*u1, *u2) <= 0 ? 1 : 0);
@@ -276,11 +276,11 @@ luaopen_uuid(lua_State *L)
 		lua_pushliteral(L, "__concat");
 		lua_pushcfunction(L, lua_uuid_concat);
 		lua_settable(L, -3);
-		
+
 		lua_pushliteral(L, "__len");
 		lua_pushcfunction(L, lua_uuid_length);
 		lua_settable(L, -3);
-		
+
 		lua_pushliteral(L, "__metatable");
 		lua_pushliteral(L, "must not access this metatable");
 		lua_settable(L, -3);
@@ -290,7 +290,7 @@ luaopen_uuid(lua_State *L)
 
 	luaL_newlib(L, luauuid);
 	lua_pushliteral(L, "_COPYRIGHT");
-	lua_pushliteral(L, "Copyright (C) 2016, 2017 by "
+	lua_pushliteral(L, "Copyright (C) 2016 - 2020 by "
 	    "micro systems marc balmer");
 	lua_settable(L, -3);
 	lua_pushliteral(L, "_DESCRIPTION");
@@ -299,6 +299,6 @@ luaopen_uuid(lua_State *L)
 	lua_pushliteral(L, "_VERSION");
 	lua_pushliteral(L, "uuid 1.2.0");
 	lua_settable(L, -3);
-	
+
 	return 1;
 }
