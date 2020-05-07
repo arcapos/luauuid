@@ -28,6 +28,7 @@
 /* UUID generation functions for Lua */
 
 #include <stdlib.h>
+#include <string.h>
 #include <uuid/uuid.h>
 
 #include <lua.h>
@@ -110,6 +111,26 @@ lua_uuid_parse(lua_State *L)
 	return 1;
 }
 
+static int
+lua_uuid_create(lua_State *L)
+{
+	uuid_t uuid, *u;
+	size_t len;
+	const char *buf;
+
+	buf = luaL_checklstring(L, 1, &len);
+	if (len != sizeof(uuid_t))
+		return luaL_error(L, "uuid.create expects string of %ld bytes",
+		    sizeof(uuid_t));
+
+	memcpy(&uuid, buf, sizeof(uuid_t));
+
+	u = (uuid_t *)lua_newuserdata(L, sizeof(uuid_t));
+	uuid_copy(*u, uuid);
+	luaL_setmetatable(L, UUID_METATABLE);
+	return 1;
+}
+
 /* uuid methods */
 static int
 lua_uuid_clear(lua_State *L)
@@ -148,6 +169,16 @@ lua_uuid_compare(lua_State *L)
 	u1 = luaL_checkudata(L, 1, UUID_METATABLE);
 	u2 = luaL_checkudata(L, 2, UUID_METATABLE);
 	lua_pushinteger(L, uuid_compare(*u1, *u2));
+	return 1;
+}
+
+static int
+lua_uuid_data(lua_State *L)
+{
+	uuid_t *u;
+
+	u = luaL_checkudata(L, 1, UUID_METATABLE);
+	lua_pushlstring(L, *u, sizeof(uuid_t));
 	return 1;
 }
 
@@ -236,11 +267,13 @@ luaopen_uuid(lua_State *L)
 		{ "generate_time",	lua_uuid_generate_time },
 		{ "generate_time_safe",	lua_uuid_generate_time_safe },
 		{ "parse",		lua_uuid_parse },
+		{ "create",		lua_uuid_create },
 		{ NULL, NULL }
 	};
 	struct luaL_Reg uuid_methods[] = {
 		{ "clear",		lua_uuid_clear },
 		{ "compare",		lua_uuid_compare },
+		{ "data",		lua_uuid_data },
 		{ "is_null",		lua_uuid_is_null },
 		{ "time",		lua_uuid_time },
 		{ "unparse",		lua_uuid_unparse },
