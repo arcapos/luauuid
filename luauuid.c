@@ -157,7 +157,6 @@ lua_uuid_concat(lua_State *L)
 	luaL_addlstring(&b, s, l);
 
 	luaL_pushresult(&b);
-
 	return 1;
 }
 
@@ -260,7 +259,6 @@ lua_uuid_length(lua_State *L)
 int
 luaopen_uuid(lua_State *L)
 {
-	int n;
 	struct luaL_Reg luauuid[] = {
 		{ "generate",		lua_uuid_generate },
 		{ "generate_random",	lua_uuid_generate_random },
@@ -277,6 +275,13 @@ luaopen_uuid(lua_State *L)
 		{ "is_null",		lua_uuid_is_null },
 		{ "time",		lua_uuid_time },
 		{ "unparse",		lua_uuid_unparse },
+		{ "__eq",		lua_uuid_equal },
+		{ "__lt",		lua_uuid_less },
+		{ "__le",		lua_uuid_less_or_equal },
+		{ "__gc",		lua_uuid_clear },
+		{ "__tostring",		lua_uuid_unparse },
+		{ "__concat",		lua_uuid_concat },
+		{ "__len",		lua_uuid_length },
 		{ NULL, NULL }
 	};
 	if (luaL_newmetatable(L, UUID_METATABLE)) {
@@ -286,40 +291,11 @@ luaopen_uuid(lua_State *L)
 		lua_pushvalue(L, -2);
 		lua_settable(L, -3);
 
-		lua_pushliteral(L, "__eq");
-		lua_pushcfunction(L, lua_uuid_equal);
-		lua_settable(L, -3);
-
-		lua_pushliteral(L, "__lt");
-		lua_pushcfunction(L, lua_uuid_less);
-		lua_settable(L, -3);
-
-		lua_pushliteral(L, "__le");
-		lua_pushcfunction(L, lua_uuid_less_or_equal);
-		lua_settable(L, -3);
-
-		lua_pushliteral(L, "__gc");
-		lua_pushcfunction(L, lua_uuid_clear);
-		lua_settable(L, -3);
-
-		lua_pushliteral(L, "__tostring");
-		lua_pushcfunction(L, lua_uuid_unparse);
-		lua_settable(L, -3);
-
-		lua_pushliteral(L, "__concat");
-		lua_pushcfunction(L, lua_uuid_concat);
-		lua_settable(L, -3);
-
-		lua_pushliteral(L, "__len");
-		lua_pushcfunction(L, lua_uuid_length);
-		lua_settable(L, -3);
-
 		lua_pushliteral(L, "__metatable");
 		lua_pushliteral(L, "must not access this metatable");
 		lua_settable(L, -3);
 	}
 	lua_pop(L, 1);
-
 
 	luaL_newlib(L, luauuid);
 	lua_pushliteral(L, "_COPYRIGHT");
@@ -330,7 +306,7 @@ luaopen_uuid(lua_State *L)
 	lua_pushliteral(L, "UUID generation functions for Lua");
 	lua_settable(L, -3);
 	lua_pushliteral(L, "_VERSION");
-	lua_pushliteral(L, "uuid 1.2.0");
+	lua_pushliteral(L, "uuid 1.2.1");
 	lua_settable(L, -3);
 
 	return 1;
