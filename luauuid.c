@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2020 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
+ * Copyright (c) 2016 - 2021 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -279,6 +279,7 @@ luaopen_uuid(lua_State *L)
 		{ "__lt",		lua_uuid_less },
 		{ "__le",		lua_uuid_less_or_equal },
 		{ "__gc",		lua_uuid_clear },
+		{ "__close",		lua_uuid_clear },
 		{ "__tostring",		lua_uuid_unparse },
 		{ "__concat",		lua_uuid_concat },
 		{ "__len",		lua_uuid_length },
@@ -299,14 +300,14 @@ luaopen_uuid(lua_State *L)
 
 	luaL_newlib(L, luauuid);
 	lua_pushliteral(L, "_COPYRIGHT");
-	lua_pushliteral(L, "Copyright (C) 2016 - 2020 by "
+	lua_pushliteral(L, "Copyright (C) 2016 - 2021 by "
 	    "micro systems marc balmer");
 	lua_settable(L, -3);
 	lua_pushliteral(L, "_DESCRIPTION");
 	lua_pushliteral(L, "UUID generation functions for Lua");
 	lua_settable(L, -3);
 	lua_pushliteral(L, "_VERSION");
-	lua_pushliteral(L, "uuid 1.2.1");
+	lua_pushliteral(L, "uuid 1.2.2");
 	lua_settable(L, -3);
 
 	return 1;
