@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2021 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
+ * Copyright (c) 2016 - 2023 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -81,7 +81,6 @@ lua_uuid_generate_time_safe(lua_State *L)
 	uuid_t uuid, *u;
 	const char *format;
 	char str[UUID_STR_SIZE + 1];
-	int r;
 
 	format = lua_tostring(L, 1);
 	lua_pushboolean(L, uuid_generate_time_safe(uuid) == 0 ? 1 : 0);
@@ -146,7 +145,6 @@ static int
 lua_uuid_concat(lua_State *L)
 {
 	luaL_Buffer b;
-	uuid_t *u;
 	size_t l;
 	const char *s;
 
