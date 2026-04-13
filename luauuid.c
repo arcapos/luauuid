@@ -135,7 +135,7 @@ lua_uuid_create(lua_State *L)
 
 	buf = luaL_checklstring(L, 1, &len);
 	if (len != sizeof(uuid_t))
-		return luaL_error(L, "uuid.create expects string of %ld bytes",
+		return luaL_error(L, "create() expects a string of %ld bytes",
 		    sizeof(uuid_t));
 
 	memcpy(&uuid, buf, sizeof(uuid_t));
