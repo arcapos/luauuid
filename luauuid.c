@@ -75,17 +75,21 @@ lua_uuid_generate_time(lua_State *L)
 	return lua_uuid_generator(L, uuid_generate_time);
 }
 
+#ifdef UUID_TYPE_DCE_TIME_V6
 static int
 lua_uuid_generate_time_v6(lua_State *L)
 {
 	return lua_uuid_generator(L, uuid_generate_time_v6);
 }
+#endif
 
+#ifdef UUID_TYPE_DCE_TIME_V7
 static int
 lua_uuid_generate_time_v7(lua_State *L)
 {
 	return lua_uuid_generator(L, uuid_generate_time_v7);
 }
+#endif
 
 static int
 lua_uuid_generate_time_safe(lua_State *L)
@@ -274,8 +278,12 @@ luaopen_uuid(lua_State *L)
 		{ "generate_random",	lua_uuid_generate_random },
 		{ "generate_time",	lua_uuid_generate_time },
 		{ "generate_time_safe",	lua_uuid_generate_time_safe },
+#ifdef UUID_TYPE_DCE_TIME_V6
 		{ "generate_time_v6",	lua_uuid_generate_time_v6 },
+#endif
+#ifdef UUID_TYPE_DCE_TIME_V7
 		{ "generate_time_v7",	lua_uuid_generate_time_v7 },
+#endif
 		{ "parse",		lua_uuid_parse },
 		{ "create",		lua_uuid_create },
 		{ NULL, NULL }
