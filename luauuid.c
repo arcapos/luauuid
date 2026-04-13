@@ -221,7 +221,6 @@ lua_uuid_time(lua_State *L)
 static int
 lua_uuid_type(lua_State *L)
 {
-	struct timeval tv;
 	uuid_t *u;
 
 	u = luaL_checkudata(L, 1, UUID_METATABLE);
@@ -264,7 +263,6 @@ lua_uuid_type(lua_State *L)
 static int
 lua_uuid_variant(lua_State *L)
 {
-	struct timeval tv;
 	uuid_t *u;
 
 	u = luaL_checkudata(L, 1, UUID_METATABLE);
