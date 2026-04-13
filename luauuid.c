@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 - 2023 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
+ * Copyright (c) 2016 - 2026 Micro Systems Marc Balmer, CH-5073 Gipf-Oberfrick
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,6 +73,18 @@ static int
 lua_uuid_generate_time(lua_State *L)
 {
 	return lua_uuid_generator(L, uuid_generate_time);
+}
+
+static int
+lua_uuid_generate_time_v6(lua_State *L)
+{
+	return lua_uuid_generator(L, uuid_generate_time_v6);
+}
+
+static int
+lua_uuid_generate_time_v7(lua_State *L)
+{
+	return lua_uuid_generator(L, uuid_generate_time_v7);
 }
 
 static int
@@ -262,6 +274,8 @@ luaopen_uuid(lua_State *L)
 		{ "generate_random",	lua_uuid_generate_random },
 		{ "generate_time",	lua_uuid_generate_time },
 		{ "generate_time_safe",	lua_uuid_generate_time_safe },
+		{ "generate_time_v6",	lua_uuid_generate_time_v6 },
+		{ "generate_time_v7",	lua_uuid_generate_time_v7 },
 		{ "parse",		lua_uuid_parse },
 		{ "create",		lua_uuid_create },
 		{ NULL, NULL }
@@ -298,14 +312,14 @@ luaopen_uuid(lua_State *L)
 
 	luaL_newlib(L, luauuid);
 	lua_pushliteral(L, "_COPYRIGHT");
-	lua_pushliteral(L, "Copyright (C) 2016 - 2021 by "
+	lua_pushliteral(L, "Copyright (C) 2016 - 2026 by "
 	    "micro systems marc balmer");
 	lua_settable(L, -3);
 	lua_pushliteral(L, "_DESCRIPTION");
 	lua_pushliteral(L, "UUID generation functions for Lua");
 	lua_settable(L, -3);
 	lua_pushliteral(L, "_VERSION");
-	lua_pushliteral(L, "uuid 1.2.2");
+	lua_pushliteral(L, "uuid 1.2.3");
 	lua_settable(L, -3);
 
 	return 1;
